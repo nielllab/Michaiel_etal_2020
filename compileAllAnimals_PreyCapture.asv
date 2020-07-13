@@ -1933,7 +1933,7 @@ else
 end
 
 
-afilename=sprintf('%s','testing_complileAll_071320','.mat')
+afilename=sprintf('%s','DEINTERLACED_Analyzed_AllAnimals_052320_halfShift','.mat')
 % afilename=sprintf('%s','DEINTERLACED_Analyzed_AllAnimals_052320_halfShift','.mat')
 save(fullfile(pSname, afilename))
 
