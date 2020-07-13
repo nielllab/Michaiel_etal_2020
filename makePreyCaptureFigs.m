@@ -1336,7 +1336,6 @@ mvmts=[gyro3All(appAll==1); d_mnEyeAll(appAll==1)] %; mnEyeAll(appAll==1)];
 %mvmts = [gyro3All(appAll==1) + d_mnEyeAll(appAll==1)];
 gm = fitgmdist(mvmts',3,'Replicates',10);
 idx = cluster(gm,mvmts');
-
 X=mvmts;
 figure
 use=find(appAll==1) % subset op pts - used in paper

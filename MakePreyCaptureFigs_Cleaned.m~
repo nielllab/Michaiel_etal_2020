@@ -739,6 +739,9 @@ for vid = 1:length(approachEpochs)
             %             end
         end
         
+        
+        
+    
         figure('Renderer', 'painters', 'Position', [100 -100 600 900])
         subplot(5,1,1)
         plot(0.5*( rth(appRange) +lth(appRange))','k','LineWidth',2); hold on;
@@ -849,17 +852,15 @@ for i = 1:length(dheadStableGood);
 end
 
 %%% plot histogram of durations (with error bars)
-clear hbins
 hbins = 1:2:150;
-h =hist(stabDurGood,hbins); 
 figure
 shadedErrorBar(hbins/30,h/sum(h),sqrt(h)/sum(h)); xlabel('secs'); ylabel('fraction');
 hold on; plot([nanmedian(stabDurGood)/frRate nanmedian(stabDurGood)/frRate], [0 .14])
 title(sprintf('Figure 4D: fixation duration median = %0.2f +/- %0.2f sec',nanmedian(stabDurGood)/frRate,(1/frRate)*std(stabDurGood)/sqrt(length(stabDurGood)))); xlim([0 2]);
 
 
+
 %%% histogram of stability for head and gaze (with error bars)
-clear hbins
 figure
 hbins = 0.25:0.5:20;
 hold on
@@ -1000,7 +1001,7 @@ barweb([headOffset; eyeOffset]',[headOffsetErr; eyeOffsetErr]')
 ylabel('azimuth to cricket (deg)');
 set(gca,'Xticklabel',{'pre saccade','post saccade'})
 legend('head','gaze')
-title('Figure 5D: median az pre and post saccade')
+title('Figure 5D: avg
 %%
 clear corr lags corrAll corrAAll uselags 
 for vid=1:length(approachEpochs)
@@ -1039,7 +1040,7 @@ L(1) = plot(nan, nan, 'b-');
 L(2) = plot(nan, nan, 'g-');
 legend(L,{'az to cricket','dtheta head'});
 
-title('Figure 5E: Corr of az and dHead Theta, head is directed to cricket')
+title('Figure 4H: Corr of az and dHead Theta, head is directed to cricket')
 %%
 clear corr lags corrAll corrAAll uselags mnEye
 for vid=1:length(approachEpochs)
@@ -1057,27 +1058,27 @@ for vid=1:length(approachEpochs)
     dGazeVid= diff(hT+mnEye);
     
     if sum(useN)>3 & sum(~isnan(dGazeVid(useN)))>20 & sum(~isnan(azC(useN)))>20
-        [corr lags]= nanxcorr(azC(useN),dGazeVid(useN),frRate,'coeff');
+        [corrR lagsR]= nanxcorr(azC(useN),dGazeVid(useN),frRate,'coeff');
         hold on;
     else
-        corr=NaN;
+        corrR=NaN;
     end
    
     if sum(use)>4 & sum(~isnan(dGazeVid(use)))>20
-        [corrA lagsA]= nanxcorr(azC(use),dGazeVid(use),frRate,'coeff');
+        [corrRA lagsRA]= nanxcorr(azC(use),dGazeVid(use),frRate,'coeff');
     else
-        corrA=NaN;
+        corrRA=NaN;
     end
-    corrAll(vid,:)=corr;
-    corrAAll(vid,:)=corrA;
+    corrRAll(vid,:)=corrR;
+    corrRAAll(vid,:)=corrRA;
 end
 
 figure%('units','normalized','outerposition',[0 0 1 1])
-err= nanstd(corrAll)/(sqrt(length(corrAll)));
-errA= nanstd(corrAAll)/(sqrt(length(corrAAll)));
+errR= nanstd(corrRAll)/(sqrt(length(corrRAll)));
+errRA= nanstd(corrRAAll)/(sqrt(length(corrRAAll)));
 
-shadedErrorBar(1:size(corrAll,2),nanmean(corrAll,1),err,'-b',1); hold on
-shadedErrorBar(1:size(corrAAll,2),nanmean(corrAAll,1),errA,'-g',1); hold on
+shadedErrorBar(1:size(corrRAll,2),nanmean(corrRAll,1),errR,'-b',1); hold on
+shadedErrorBar(1:size(corrRAAll,2),nanmean(corrRAAll,1),errRA,'-g',1); hold on
 plot([frRate+1,frRate+1],[1,-1],'--','Color', [.5 .5 .5]); xlim([1 2*frRate+1]); axis square; ylim([-.2 .5]);
 
 clear L
@@ -1085,4 +1086,4 @@ L(1) = plot(nan, nan, 'b-');
 L(2) = plot(nan, nan, 'g-');
 legend(L,{'az to cricket','dtheta head'});
 
-title('Figure 5F: Corr of az and gaze')
+title('Figure 4I: Corr of az and dGaze, gaze is less directed to cricket')
