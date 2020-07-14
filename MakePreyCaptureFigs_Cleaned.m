@@ -1,6 +1,7 @@
 close all;
 clear all;
-load('Michaiel_et_al.,2020_fullDataset.mat')
+%load('Michaiel_et_al.,2020_fullDataset.mat')
+load('multAni_test_071420_COMPILED_b.mat')
 load('compileAllAnimals_CONTROL_090219.mat','mouseSp','appEpoch','thetaHead');
 frRate=60;
 accelData=1;
@@ -8,49 +9,49 @@ accelData=1;
 
 %%% Figure 1C: some variables computed for a single example trial in the
 %%%dataset
-for vid=105
-    use=approachEpochs{vid};
-    range=2*1148:2*1655
-    tR=thetaR{vid}(:,range)-nanmedian(thetaR{vid}(:,range));
-    tL=thetaL{vid}(:,range)-nanmedian(thetaL{vid}(:,range));
-    tR=interpNan(tR,10,'linear'); tL=interpNan(tL,10,'linear');
-    mnEye=.5*(tR+tL); mnEye=interpNan(mnEye,10,'linear');
-    headTh=headTheta{vid}(:,range)-nanmedian(headTheta{vid}(:,range));
-    headTh=headTheta{vid}(:,range)-nanmedian(headTheta{vid}(:,range));
-    eyeVelocity=interpNan(diff(mnEye), 10,'linear');
-    
-    figure
-    subplot(7,1,1)
-    plot(tR); hold on
-    plot(tL);
-    plot(mnEye-nanmedian(mnEye));xlim([1 length(range)])
-    ylim([-32 32]);
-    title('horiz. eye position')
-    subplot(7,1,2)
-    plot(eyeVelocity);
-    xlim([1 length(range)]);
-    title('eye velocity')
-    subplot(7,1,3)
-    plot(dist2cricket{vid}(:,range));xlim([1 length(range)]); hold on
-    ylim([0 40])
-    plot([296 296],[-60 60],'g')
-    title('distance to cricket')
-    subplot(7,1,4)
-    plot(rad2deg(azimuth{vid}(:,range)));xlim([1 length(range)])
-    title('azimuth')
-    subplot(7,1,5);
-    plot(mouseVel{vid}(:,range))
-    title('speed')
-    xlim([1 length(range)])
-    subplot(7,1,6)
-    plot(headTh);
-    xlim([1 length(range)])
-    title('head yaw')
-    subplot(7,1,7)
-    plot(accelerometerChs{vid}(range,2)-nanmedian(accelerometerChs{vid}(range,2)));
-    xlim([1 length(range)])
-    title('head pitch')
-end
+% for vid=105
+%     use=approachEpochs{vid};
+%     range=2*1148:2*1655
+%     tR=thetaR{vid}(:,range)-nanmedian(thetaR{vid}(:,range));
+%     tL=thetaL{vid}(:,range)-nanmedian(thetaL{vid}(:,range));
+%     tR=interpNan(tR,10,'linear'); tL=interpNan(tL,10,'linear');
+%     mnEye=.5*(tR+tL); mnEye=interpNan(mnEye,10,'linear');
+%     headTh=headTheta{vid}(:,range)-nanmedian(headTheta{vid}(:,range));
+%     headTh=headTheta{vid}(:,range)-nanmedian(headTheta{vid}(:,range));
+%     eyeVelocity=interpNan(diff(mnEye), 10,'linear');
+%     
+%     figure
+%     subplot(7,1,1)
+%     plot(tR); hold on
+%     plot(tL);
+%     plot(mnEye-nanmedian(mnEye));xlim([1 length(range)])
+%     ylim([-32 32]);
+%     title('horiz. eye position')
+%     subplot(7,1,2)
+%     plot(eyeVelocity);
+%     xlim([1 length(range)]);
+%     title('eye velocity')
+%     subplot(7,1,3)
+%     plot(dist2cricket{vid}(:,range));xlim([1 length(range)]); hold on
+%     ylim([0 40])
+%     plot([296 296],[-60 60],'g')
+%     title('distance to cricket')
+%     subplot(7,1,4)
+%     plot(rad2deg(azimuth{vid}(:,range)));xlim([1 length(range)])
+%     title('azimuth')
+%     subplot(7,1,5);
+%     plot(mouseVel{vid}(:,range))
+%     title('speed')
+%     xlim([1 length(range)])
+%     subplot(7,1,6)
+%     plot(headTh);
+%     xlim([1 length(range)])
+%     title('head yaw')
+%     subplot(7,1,7)
+%     plot(accelerometerChs{vid}(range,2)-nanmedian(accelerometerChs{vid}(range,2)));
+%     xlim([1 length(range)])
+%     title('head pitch')
+% end
 
 %%% Figure 1D: mean velocity control & w/cameras
 
@@ -80,15 +81,15 @@ clear mouseSp appEpoch useData appTime thetaHead vid runningSmooth %clear contro
 for vid=1:length(approachEpochs)
     appTime=approachEpochs{vid};
     w=gausswin(frRate/2); %smooth running speed in 250 ms window
-    runningSmooth =medfilt1(mouseVel{vid},frRate/4);
+    runningSmooth =medfilt1(mouseVel{vid}(:,1:end-1),frRate/4);
     
-    Cam_speed(vid,1) = sum(runningSmooth(:,appTime==0)>5)./(length(runningSmooth(:,appTime==0)));
+    Cam_speed(vid,1) = sum(runningSmooth(appTime==0)>5)./(length(runningSmooth(appTime==0)));
     
     
-    Cam_speed(vid,3) = nanmean(runningSmooth(:,appTime==0));
+    Cam_speed(vid,3) = nanmean(runningSmooth(appTime==0));
     if sum(appTime==1)>frRate
-        Cam_speed(vid,2) =sum(runningSmooth(:,appTime==1)>5)./(length(runningSmooth(:,appTime==1)));
-        Cam_speed(vid,4) = nanmean(runningSmooth(:,appTime==1));
+        Cam_speed(vid,2) =sum(runningSmooth(appTime==1)>5)./(length(runningSmooth(appTime==1)));
+        Cam_speed(vid,4) = nanmean(runningSmooth(appTime==1));
     else
         Cam_speed(vid,2)=nan;
         Cam_speed(vid,4)=nan;
@@ -190,8 +191,8 @@ allGyroYaw = allGyroYaw-gyroBias;
 clear corr lags corrAll corrAAll uselags uselagsA
 corrAll=[]; corrAAll=[];
 for vid=1:length(approachEpochs)
-    nframe = min(length(dthetaR{vid}),length(dThetaL{vid}));
-    dtR=dthetaR{vid}(1:nframe); dtL=dThetaL{vid}(1:nframe);
+    nframe = min(length(dthetaR{vid}),length(dthetaL{vid}));
+    dtR=dthetaR{vid}(1:nframe); dtL=dthetaL{vid}(1:nframe);
     nonapp=approachEpochs{vid}==0;
     use = (nonapp==1)';
     if sum(use)>3
@@ -323,11 +324,11 @@ ylim([0 .27])
 % put together data from all experiments
 d_mnEyeAll=[];allDLChead=[];mnEyeAll=[]; mouseSpAll=[];
 for vid=1:length(approachEpochs)
-    nframe=min(length(dthetaR{vid}),length(dThetaL{vid}));
+    nframe=min(length(dthetaR{vid}),length(dthetaL{vid}));
     nframe=min(nframe, length(dTheta{vid}));
     mnEye =.5*(thetaR{vid}(1:nframe)+thetaL{vid}(1:nframe));
     mnEye=mnEye-nanmean(mnEye);
-    mnEyeD =.5*(dthetaR{vid}(1:nframe)+dThetaL{vid}(1:nframe));
+    mnEyeD =.5*(dthetaR{vid}(1:nframe)+dthetaL{vid}(1:nframe));
     mnEyeD=mnEyeD-nanmean(mnEyeD);
     dHead=dTheta{vid}(1:nframe); dHead=dHead-nanmean(dHead);
     allDLChead = [allDLChead dHead'];
@@ -341,11 +342,11 @@ clear corrYaw corrAllYaw err errA lagsYaw
 for c=0:1
     for vid=1:length(approachEpochs)
         nframe = min(length(accelerometerChs{vid}(:,6)),length(dthetaR{vid}));
-        nframe = min(nframe, length(dThetaL{vid}));
+        nframe = min(nframe, length(dthetaL{vid}));
         nframe=min(nframe, length(approachEpochs{vid}));
         use=approachEpochs{vid}(1:nframe)==c;
         dth=dTheta{vid}(1:nframe);
-        gyroyaw=accelerometerChs{vid}(1:nframe,6); dtR=dthetaR{vid}(1:nframe); dtL=dThetaL{vid}(1:nframe);
+        gyroyaw=accelerometerChs{vid}(1:nframe,6); dtR=dthetaR{vid}(1:nframe); dtL=dthetaL{vid}(1:nframe);
         mnEye=.5*(dtR+dtL); gyroyaw=gyroyaw-nanmean(gyroyaw); mnEye=mnEye-nanmean(mnEye);
         if sum(use)>5 & sum(~isnan(gyroyaw(use)))>10
             [corrYaw lagsYaw]= nanxcorr(gyroyaw(use),mnEye(use),frRate,'coeff');
@@ -517,7 +518,7 @@ for vid = 1:length(approachEpochs)
     nonapp=~approachEpochs{vid};
     %%% get left eye positions
     lth = thetaL{vid} - nanmedian(thetaL{vid});
-    dlth = dThetaL{vid};
+    dlth = dthetaL{vid};
     nl(vid) = sum(~isnan(lth(app))); %%% # good eye approach points
     lthHist(:,1,vid) = hist(lth(app),thbins)/nl(vid);
     lthHist(:,2,vid) = hist(lth(~app),thbins)/sum(~isnan(lth(~app)));
