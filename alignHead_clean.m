@@ -1,4 +1,4 @@
-function data = alignHead(fname, nPts,showMovies,psfilename, mousethresh, crickthresh)
+function data = alignHead(fname, nPts,showMovies, mousethresh, crickthresh)
 %%% reads in csv data from deepLabCut with head and cricket positions
 %%%
 %%% computes head position, even in presence of noisy/absent points, by
