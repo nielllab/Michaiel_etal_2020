@@ -198,7 +198,7 @@ for j=1:length(fileList) %%% loop over all top camera files
         Data(j).az =(adjustedTS.azAdj)';
         Data(j).theta =(adjustedTS.headThetaAdj)';
         Data(j).dtheta = interp1(TopTs(1:end-1),Data(j).dThetaRaw,xq);
-        Data(j).mouse_xy =adjustedTS.mousexyAdj;
+        Data(j).mouseXY =adjustedTS.mousexyAdj;
         Data(j).mouseV =(adjustedTS.mouseVAdj)';
         Data(j).range=(adjustedTS.rangeAdj)';
         Data(j).cricketxy =adjustedTS.cricketxyAdj;
@@ -206,7 +206,7 @@ for j=1:length(fileList) %%% loop over all top camera files
         Data(j).cricketP=adjustedTS.cricketPAdj;
         Data(j).cricketHead=adjustedTS.cricketHAdj;
         Data(j).cricket_pH=adjustedTS.cricketpHAdj;
-        Data(j).cricketTheta=adjustedTS.cricketThetaAdj;
+        Data(j).cricket_theta=adjustedTS.cricketThetaAdj;
         
         %%% interpolate right eye points
         Data(j).XRcent =interp1(RTS,Data(j).XRcentraw,xq);
