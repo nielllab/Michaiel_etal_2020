@@ -96,6 +96,7 @@ for j=1:length(fileList) %%% loop over all top camera files
         Data(j).yR(2:2:end) = Data(j).yR(2:2:end) -1;
     end
     
+    %%% do ellipse fits and compute angular rotation of those ellipses
     [Data(j).Rthetaraw,Data(j).Rphiraw,Data(j).EllipseParamsR,Data(j).ExtraParamsR,Data(j).goodReye, Data(j).ngoodR, Data(j).RcalR,Data(j).RcalM, Data(j).scaleR] = EyeCameraCalc1(length(Data(j).xR(:,1)), Data(j).xR,Data(j).yR, Data(j).RLikelihood,psfilename)
     Data(j).XRcentraw=Data(j).EllipseParamsR(:,1);  Data(j).YRcentraw=Data(j).EllipseParamsR(:,2);
     
