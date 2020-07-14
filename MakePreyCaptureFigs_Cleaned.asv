@@ -1,7 +1,7 @@
 close all;
 clear all;
 %load('Michaiel_et_al.,2020_fullDataset.mat')
-load('multAni_test_071420_COMPILED_c.mat')
+load('multAni_test_071420_COMPILED_b.mat')
 load('compileAllAnimals_CONTROL_090219.mat','mouseSp','appEpoch','thetaHead');
 frRate=60;
 accelData=1;
@@ -322,7 +322,7 @@ ylim([0 .27])
 %% FIGURE 3: Coordination of eyes and head
 
 % put together data from all experiments
-d_mnEyeAll=[];allDLChead=[];mnEyeAll=[]; mouseSpAll=[]; allAppT=[];
+d_mnEyeAll=[];allDLChead=[];mnEyeAll=[]; mouseSpAll=[]; allAppT=[]
 for vid=1:length(approachEpochs)
     nframe=min(length(dthetaR{vid}),length(dthetaL{vid}));
     nframe=min(nframe, length(dTheta{vid}));
@@ -331,13 +331,11 @@ for vid=1:length(approachEpochs)
     mnEyeD =.5*(dthetaR{vid}(1:nframe)+dthetaL{vid}(1:nframe));
     mnEyeD=mnEyeD-nanmean(mnEyeD);
     dHead=dTheta{vid}(1:nframe); dHead=dHead-nanmean(dHead);
-    approaches=approachEpochs{vid}(1:nframe);
     allDLChead = [allDLChead dHead'];
     speed =mouseVel{vid}(1:nframe);
     mouseSpAll=[mouseSpAll speed];
     mnEyeAll=[mnEyeAll mnEye];
     d_mnEyeAll=[d_mnEyeAll mnEyeD];
-    allAppT=[allAppT approaches];
 end
 
 clear corrYaw corrAllYaw err errA lagsYaw
@@ -550,7 +548,7 @@ for vid = 1:length(approachEpochs)
     
     % get left eye phi
     Lphi = phiL{vid}-nanmean(phiL{vid});
-    d_phiL = dphiL{vid};
+    dphiL = dPhiL{vid};
     nlp(vid) =sum(~isnan(Lphi(app))); %%% # good eye approach points
     phiLHist(:,1,vid) = hist(Lphi(app),thbins)/nrp(vid);
     phiLHist(:,2,vid) = hist(Lphi(~app),thbins)/sum(~isnan(Lphi(~app)));

@@ -84,7 +84,7 @@ goodLeft=Lcc>.3 & lMissing>.75;
 useTime = goodTheta>=.9 & goodRight' & goodLeft';
 useData=find(useTime); 
 
-allTilt=[];allRoll=[];allYaw=[]; dlcVerg=[];dlcDverg=[];allGyro1=[];allGyro2=[];allGyro3=[];
+allTilt=[];allRoll=[];allYaw=[]; dlcVerg=[];dlcDverg=[];allGyro1=[];allGyro2=[];allGyroYaw=[];
 dlcDverg=[]; dlcDphi=[]; dlcPhi=[];dlcDhth=[];dlcHth=[];
 
 for vid = 1:length(useData)
@@ -125,7 +125,7 @@ for vid = 1:length(useData)
    
     allGyroRoll=[allGyro1 gyro1(1:end-1)']; 
     allGyroTilt=[allGyro2 gyro2(1:end-1)'];
-    allGyroYaw=[allGyro3 gyro3(1:end-1)'];
+    allGyroYaw=[allGyroYaw gyro3(1:end-1)'];
     
     allAvgPhi=[dlcPhi phi(1:end-1)];
     d_allAvgPhi=[dlcDphi dphi];
@@ -197,6 +197,6 @@ headTheta=headTheta(useData);
 
 
 %%
-pSname='/Users/angiemichaiel/Desktop/GitHubCode/Michaiel_etal_2020/';
-afilename=('multAni_test_071420_COMPILED_b.mat');
+pSname='T:\PreyCaptureAnalysis\Data\';
+afilename=('multAni_test_071420_COMPILED_c.mat');
 save(fullfile(pSname, afilename))
